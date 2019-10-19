@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const { table } = require("table");
@@ -13,7 +14,7 @@ const connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "cecile1sGROOT",
+  password: process.env.password,
   database: "bamazon_db"
 });
 
@@ -64,7 +65,7 @@ function afterConnection() {
             .prompt([
               {
                 type: "input",
-                message: `How many of ID#${answers.productID} would you like to buy?`,
+                message: `How many of ID# ${answers.productID} would you like to buy?`,
                 name: "userQuantity"
               }
             ]) // closes second prompt
@@ -76,8 +77,12 @@ function afterConnection() {
                 // set variables
                 const userQuantity = response.userQuantity;
                 const productPrice = optionArray[answers.productID - 1].price;
+                const stockRemaining = Number(
+                  optionArray[answers.productID - 1].stock_quantity -
+                    userQuantity
+                );
                 // TO DO fix this balance
-                const balance = Number(response.userQuantity * productPrice);
+                const balance = Number(userQuantity * productPrice);
                 connection.query(
                   "INSERT INTO shopping_cart SET ?",
                   {
@@ -87,7 +92,7 @@ function afterConnection() {
                   function(err, response) {
                     if (err) throw err;
                     console.log(
-                      `\n${userQuantity} of ID#${productID} added to your cart!\nYour current balance for this purchase is $${balance}\n`
+                      `\n${userQuantity} of ID# ${productID} added to your cart! There are ${stockRemaining} more available.\nYour current balance for this purchase is $${balance}\n`
                     );
                   }
                 );

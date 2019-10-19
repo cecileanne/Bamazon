@@ -4,6 +4,7 @@
   "description": "",
   "main": "bamazonCustomer.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "inquirer": "^7.0.0",
     "mysql": "^2.17.1",
     "table": "^5.4.6"
