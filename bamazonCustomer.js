@@ -118,8 +118,8 @@ function afterConnection() {
                         if (err) throw err;
                       }
                     );
-                    updateProductsDB();
                     console.log(`Product database has been updated`);
+                    updateProductsDB();
                   } // closes function updateProductsDB
                   // ); // closes connectionquery for addToCart()
                   // } // closes addToCart function
