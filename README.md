@@ -6,12 +6,6 @@
 
 Bamazon(Customer) is a Command Line Interface App that allows users to "purchase" some fake items as you would from a certain company that may or may not rhyme with Bamazon.
 
-### Concert information you will receive
-
-1. Artist Name (which you will provide)
-2. Venue, City of show
-3. Date of the event
-
 ## Getting Started
 
 1. Download Mysql Workbench to the applications folder of your computer
