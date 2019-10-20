@@ -106,6 +106,19 @@ function afterConnection() {
                   console.log(
                     `\n${userAmountToPurchase} of ID# ${productID} added to your cart! There are ${stockRemaining} more available.\nYour current balance for this purchase is $${balance}\n`
                   );
+                  function updateProductsDB(productID, stockRemaining) {
+                    connection.query(
+                      `SELECT stock_quantity FROM products WHERE id = ${productID}
+                        UPDATE products
+                        SET stock_quantity = ${stockRemaining}
+                        WHERE id = ${productID};`,
+                      function(err, res) {
+                        if (err) throw err;
+                      }
+                    );
+                    updateProductsDB();
+                    console.log(`Product database has been updated`);
+                  } // closes function updateProductsDB
                   // ); // closes connectionquery for addToCart()
                   // } // closes addToCart function
                   // addToCart();
