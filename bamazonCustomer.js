@@ -25,15 +25,15 @@ connection.connect(function(err) {
 });
 
 function afterConnection() {
-  const optionArray = [["ID#", "Product", "Cost/Unit ($)", "Amount in Stock"]];
+  const optionArray = [["ID#", "Product", "Cost/Unit", "Amount in Stock"]];
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
     res.forEach(product =>
       optionArray.push([
         product.id,
         product.product_name,
-        product.price,
-        product.stock_quantity
+        `$${product.price}`,
+        `${product.stock_quantity} available`
       ])
     );
     let options = {
@@ -80,67 +80,41 @@ function afterConnection() {
                 );
                 // console.log(Number(chosenItemCurrentStock));
                 // console.log(Number(response.userQuantity));
+                // Check against stock to see if there is enough
                 if (chosenItemCurrentStock < userAmountToPurchase) {
                   console.log(
-                    `Sorry, try a different item or lower number - we're out of stock.`
+                    `Sorry, try a different item or lower number - we don't have enough stock to fulfill your request.`
                   );
                   userShop();
+                } else {
+                  // update shopping cart
+                  // function addToCart() {
+                  const balance =
+                    Number(JSON.stringify(res[productID - 1].price)) *
+                    userAmountToPurchase;
+                  const stockRemaining =
+                    chosenItemCurrentStock - userAmountToPurchase;
+                  // connection.query(
+                  //   "INSERT INTO shopping_cart SET ?",
+                  //   {
+                  //     id: productID,
+                  //     quantity_wanted: userAmountToPurchase
+                  //   },
+                  //   function(err, response) {
+                  //     if (err) throw err;
+                  //   }; // closes function for error
+                  console.log(
+                    `\n${userAmountToPurchase} of ID# ${productID} added to your cart! There are ${stockRemaining} more available.\nYour current balance for this purchase is $${balance}\n`
+                  );
+                  // ); // closes connectionquery for addToCart()
+                  // } // closes addToCart function
+                  // addToCart();
                 }
               }); // closes connection query to check stock
             }) // closes then
-
-            // TO DO check against amount to see if we have enough
-            // if (
-            //   Number(response.userQuantity) >
-            //   Number(optionArray[productID - 1].stock_quantity)
-            // ) {
-            // update shopping cart
-            //   function addToCart() {
-            //     // set variables
-            //         // const chosenItemID = res[productID].id;
-            //         // const chosenItemStock = res[productID].stock_quantity;
-            //         // const userQuantity = response.userQuantity;
-            //         // const productPrice = res[productID].price;
-            //         // const stockRemaining =
-            //         //   Number(optionArray[productID].stock_quantity) -
-            //         //   Number(userQuantity);
-            //         // TO DO fix this balance
-            //         // const balance = Number(userQuantity * productPrice);
-            //         connection.query(
-            //           "INSERT INTO shopping_cart SET ?",
-            //           {
-            //             id: productID,
-            //             quantity_wanted: userQuantity
-            //           },
-            //           function(err, response) {
-            //             if (err) throw err;
-            //             console.log(
-            //               `\n${userQuantity} of ID# ${productID} added to your cart! There are ${stockRemaining} more available.\nYour current balance for this purchase is $${balance}\n`
-            //             );
-            //           }
-            //         );
-            //       } // closes connection query for math logic
-            //     );
-            //   } // closes connection query
-            //   addToCart(answers.productID, response.userQuantity);
-            //   // } // closes if greater than
-            //   // else {
-            //   //   console.log(
-            //   //     `Sorry, we don't have enough in stock - please try again with a smaller number`
-            //   //   );
-            //   // userShop();
-            //   // }
-            // }) // closes then
             .finally(response => {
-              // // CHECK OUT is a joining of the tables
-              // connection.query(
-              //   `SELECT ${response.productID} FROM products;`,
-              //   function(err, data) {
-              //     if (err) throw err;
-              //   }
-              // );
+              // // CHECK OUT function is a joining of the tables - not necessary
               // // TO DO give option of adding more to the cart
-
               connection.end();
             }) // closes finally
             .catch(err => console.log(err)); // closes then
