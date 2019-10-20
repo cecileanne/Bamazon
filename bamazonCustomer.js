@@ -106,6 +106,8 @@ function afterConnection() {
                   console.log(
                     `\n${userAmountToPurchase} of ID# ${productID} added to your cart! There are ${stockRemaining} more available.\nYour current balance for this purchase is $${balance}\n`
                   );
+                  // Sal or Nick: This function isn't working, please help in office hours!
+                  // I keep on getting an error wherever I call updateProductsDB that it is happening after I close the connection, so it's where I don't get an error in the code but it's definitely not running yet.
                   function updateProductsDB(productID, stockRemaining) {
                     connection.query(
                       `SELECT stock_quantity FROM products WHERE id = ${productID}
