@@ -41,7 +41,7 @@ Developer!
 Watch me shop:
 https://drive.google.com/file/d/1D7GvRMNnwXtG6rVyGGrROQGkePkHHgyH/view
 
-I think GoogleScreenCast using a port creates an error because when I run my bamazonCustomer and I'm not recording, I don't get an error (whereas I do in the video) This is what it lloks like:
+I think GoogleScreenCast using a port creates an error because when I run my bamazonCustomer and I'm not recording, I don't get an error (whereas I do in the video) This is what it looks like:
 
 ![screenshot of final bamazon purchase](/images/bamazonResultScreenShot.png)
 
